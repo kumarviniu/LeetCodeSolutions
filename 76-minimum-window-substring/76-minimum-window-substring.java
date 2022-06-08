@@ -22,13 +22,14 @@ class Solution {
         while (r < s.length()) {
             char c = s.charAt(r);
             if (tmap.containsKey(c)) {
-                int val = smap.getOrDefault(c, 0);
-                smap.put(c, val + 1);
-                if (val + 1 == tmap.get(c))
+                int val = smap.getOrDefault(c, 0) + 1;
+                smap.put(c, val);
+                if (val == tmap.get(c))
                     have++;
                 while (have == need) {
-                    if (r - l + 1 < min) {
-                        min = r - l + 1;
+                    int window = r - l + 1;
+                    if (window < min) {
+                        min = window;
                         minL = l;
                         minR = r;
                     }   
