@@ -24,6 +24,7 @@ class Solution {
                     min = r - l + 1;
                     minL = l;
                     minR = r;
+                    if (min == t.length()) break;
                 }
                 smap.put(s.charAt(l), smap.get(s.charAt(l)) - 1);
                 l++;
