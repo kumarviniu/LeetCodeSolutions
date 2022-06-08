@@ -17,16 +17,18 @@ class Solution {
         int min = Integer.MAX_VALUE;
         int minL = 0;
         int minR = 0;
-        
+        boolean isMatchNeeded = true;
         while (r < s.length()) {
-            if (isMatch(tmap, smap)) {
+            char c = s.charAt(l);
+            if (!isMatchNeeded || isMatch(tmap, smap)) {
                 if ((r - l + 1) < min) {
                     min = r - l + 1;
                     minL = l;
                     minR = r;
                     if (min == t.length()) break;
                 }
-                smap.put(s.charAt(l), smap.get(s.charAt(l)) - 1);
+                smap.put(c, smap.get(c) - 1);
+                isMatchNeeded = tmap.getOrDefault(c, 0) > smap.get(c);
                 l++;
             } else {
                 r++;
