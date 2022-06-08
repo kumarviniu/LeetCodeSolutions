@@ -4,47 +4,46 @@ class Solution {
             return "";
         
         Map<Character, Integer> tmap = new HashMap<>();
-        for (int i = 0; i < t.length(); i++)
-            tmap.put(t.charAt(i), tmap.getOrDefault(t.charAt(i), 0) + 1);
+        Map<Character, Integer> smap = new HashMap<>();
+       
+        int need = t.length();
+        int have = 0;
         
         int l = 0;
-        int r = t.length() - 1;
-        
-        Map<Character, Integer> smap = new HashMap<>();
-        for(int i = 0; i < t.length(); i++)
-            smap.put(s.charAt(i), smap.getOrDefault(s.charAt(i), 0) + 1);
-        
+        int r = 0;
+
         int min = Integer.MAX_VALUE;
         int minL = 0;
         int minR = 0;
-        boolean isMatchNeeded = true;
+        
+        for (int i = 0; i < t.length(); i++)
+            tmap.put(t.charAt(i), tmap.getOrDefault(t.charAt(i), 0) + 1);
+        
         while (r < s.length()) {
-            char c = s.charAt(l);
-            if (!isMatchNeeded || isMatch(tmap, smap)) {
-                if ((r - l + 1) < min) {
-                    min = r - l + 1;
-                    minL = l;
-                    minR = r;
-                    if (min == t.length()) break;
+            char c = s.charAt(r);
+            if (tmap.containsKey(c)) {
+                int val = smap.getOrDefault(c, 0);
+                smap.put(c, val + 1);
+                if (val + 1 <= tmap.get(c))
+                    have++;
+                while (have == need) {
+                    if (r - l + 1 < min) {
+                        min = r - l + 1;
+                        minL = l;
+                        minR = r;
+                    }   
+                    c = s.charAt(l);
+                    if (tmap.containsKey(c)) {
+                        if (smap.get(c) - 1 < tmap.get(c))
+                            have--;
+                        smap.put(c, smap.get(c) - 1);
+                    }
+                    l++;
                 }
-                smap.put(c, smap.get(c) - 1);
-                isMatchNeeded = tmap.getOrDefault(c, 0) > smap.get(c);
-                l++;
-            } else {
-                r++;
-                if (r < s.length())
-                    smap.put(s.charAt(r), smap.getOrDefault(s.charAt(r), 0) + 1);
             }
+            r++;
         }
         
         return min != Integer.MAX_VALUE ? s.substring(minL, minR + 1) : "";
-    }
-    
-    public boolean isMatch(Map<Character, Integer> tmap, Map<Character, Integer> smap) {
-        for (Character key : tmap.keySet()) {
-            Integer val = tmap.get(key);
-            if (!smap.containsKey(key) || smap.get(key) < val) return false;
-        }
-        return true;
     }
 }
