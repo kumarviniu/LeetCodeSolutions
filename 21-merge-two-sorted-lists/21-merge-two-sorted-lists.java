@@ -10,7 +10,7 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        ListNode outHead = null;
+        ListNode outHead = new ListNode();
         ListNode outRun = outHead;
         ListNode temp;
         while (list1 != null && list2 != null) {
@@ -21,25 +21,10 @@ class Solution {
                 temp = list2;
                 list2 = list2.next;
             }
-            if (outHead == null) {
-                outHead = temp;
-                outRun = outHead;
-            } else {
-                outRun.next = temp;
-                outRun = outRun.next;
-            }
-        }
-        ListNode list = list1 != null ? list1 : list2;
-        if (list != null && outHead == null) {
-            outHead = list;
-            outRun = outHead;
-            list = list.next;
-        }
-        while (list != null) {
-            outRun.next = list;
+            outRun.next = temp;
             outRun = outRun.next;
-            list = list.next;
         }
-        return outHead;
+        outRun.next = list1 != null ? list1 : list2;
+        return outHead.next;
     }
 }
