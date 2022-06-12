@@ -15,18 +15,18 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        int[] count = new int[1];
-        return inOrder(root, k, count);
-    }
-    
-    public int inOrder(TreeNode root, int k, int[] count) {
-        if (root == null)
-            return -1;
-        int result = inOrder(root.left, k, count);
-        if (result != -1)
-            return result;
-        if (++count[0] == k)
-            return root.val;
-        return inOrder(root.right, k, count);
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode node = root;
+        while (!stack.isEmpty() || node != null) {
+            while (node != null) {
+                stack.add(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            if (--k == 0)
+                return node.val;
+            node = node.right;
+        }
+        return -1;
     }
 }
