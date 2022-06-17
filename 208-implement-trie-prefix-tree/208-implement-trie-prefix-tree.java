@@ -7,12 +7,13 @@ class Trie {
     public void insert(String word) {
         TrieNode curr = root;
         for (int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            if (!curr.contains(c)) {
+            TrieNode next = curr.next(word.charAt(i));
+            if (next == null) {
                 TrieNode node = new TrieNode();
-                curr.put(c, node);
+                curr.put(word.charAt(i), node);
+                next = node;
             }
-            curr = curr.next(c);
+            curr = next;
         }
         curr.end = true;
     }
@@ -29,23 +30,17 @@ class Trie {
         TrieNode curr = root;
         int i;
         for(i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            if (!curr.contains(c))
+            TrieNode next = curr.next(word.charAt(i));
+            if (next == null)
                 return false;
-            curr = curr.next(c);
+            curr = next;
         }
-        if (checkEnd)
-            return curr.end && i == word.length();
-        return i == word.length();
+        return checkEnd ? curr.end : true;
     }
     
     static class TrieNode {
         Map<Character, TrieNode> suffix = new HashMap<>();
         boolean end = false;
-        
-        boolean contains(Character c) {
-            return suffix.get(c) != null;
-        }
         
         TrieNode next(Character c) {
             return suffix.get(c);
