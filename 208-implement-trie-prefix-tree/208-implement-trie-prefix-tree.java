@@ -18,6 +18,14 @@ class Trie {
     }
     
     public boolean search(String word) {
+        return match(word, true);
+    }
+    
+    public boolean startsWith(String prefix) {
+        return match(prefix, false);
+    }
+    
+    public boolean match(String word, boolean checkEnd) {
         TrieNode curr = root;
         int i;
         for(i = 0; i < word.length(); i++) {
@@ -26,20 +34,9 @@ class Trie {
                 return false;
             curr = curr.next(c);
         }
-        
-        return curr.end && i == word.length();
-    }
-    
-    public boolean startsWith(String prefix) {
-        TrieNode curr = root;
-        int i;
-        for(i = 0; i < prefix.length(); i++) {
-            char c = prefix.charAt(i);
-            if (!curr.contains(c))
-                return false;
-            curr = curr.next(c);
-        }
-        return i == prefix.length();
+        if (checkEnd)
+            return curr.end && i == word.length();
+        return i == word.length();
     }
     
     static class TrieNode {
