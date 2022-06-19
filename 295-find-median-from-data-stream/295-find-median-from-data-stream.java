@@ -9,19 +9,16 @@ class MedianFinder {
     
     public void addNum(int num) {
         left.add(num);
-        if (left.size() - right.size() > 1)
-            right.add(left.poll());
-        if (!right.isEmpty() && left.peek() > right.peek())
-            right.add(left.poll());
-         if (right.size() - left.size() > 1)
-            left.add(right.poll());
-        
+        right.add(left.remove());
+
+        if(left.size() < right.size())
+            left.add(right.remove());
     }
     
     public double findMedian() {
         if (left.size() == right.size())
-            return (double) (left.peek() + right.peek()) / 2;
-        return left.size() > right.size() ? left.peek() : right.peek();
+            return (left.peek() + right.peek()) /2.0;
+        return left.peek();
     }
 }
 
