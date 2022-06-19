@@ -3,11 +3,11 @@ class Solution {
              
         Map<Integer, List<Integer>> graph = new HashMap<>();
         
-        for (int[] pre : prerequisites) {
-            List<Integer> out = graph.getOrDefault(pre[1], new ArrayList<>());
-            out.add(pre[0]);
-            graph.put(pre[1], out);
-        }
+        for(int i = 0; i < numCourses; i++)
+            graph.put(i, new ArrayList<>());
+        
+        for (int[] pre : prerequisites)
+            graph.get(pre[1]).add(pre[0]);
         
         int[] visited = new int[numCourses];
         
@@ -20,11 +20,9 @@ class Solution {
     
     public boolean dfs(int vertex, Map<Integer, List<Integer>> graph, int[] visited) {
         visited[vertex] = 1;
-        if (graph.containsKey(vertex)) {
-            for (Integer neighbor : graph.get(vertex)) {
-                if (visited[neighbor] == 1 || (visited[neighbor] == 0 && !dfs(neighbor, graph, visited)))
-                    return false;
-            }
+        for (Integer neighbor : graph.get(vertex)) {
+            if (visited[neighbor] == 1 || (visited[neighbor] == 0 && !dfs(neighbor, graph, visited)))
+                return false;
         }
         visited[vertex] = 2;
         return true;
