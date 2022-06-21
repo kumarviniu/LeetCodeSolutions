@@ -1,26 +1,52 @@
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
-        Map<String, Boolean> dp = new HashMap<>();
-        Set<String> words = new HashSet<>();
-        for (String word : wordDict)
-            words.add(word);
-        return dfs(s, words, dp);
+        Map<Integer, Boolean> dp = new HashMap<>();
+        TrieNode root = new TrieNode();
+        for (String word: wordDict)
+            add(word, root);
+        return dfs(s, 0, root, dp);
     }
     
-    public boolean dfs(String s, Set<String> words, Map<String, Boolean> dp) {
-        if (s.isEmpty())
-            return true;
-        if (dp.containsKey(s))
-            return dp.get(s);
+    public void add(String word, TrieNode root) {
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            TrieNode next = root.map.get(c);
+            if (next == null) {
+                TrieNode node = new TrieNode();
+                root.map.put(c, node);
+                next = node;
+            }
+            root = next;
+        }
+        root.end = true;
+    }
+    
+    public boolean dfs(String s, int index, TrieNode root, Map<Integer, Boolean> dp) {
+       if (index == s.length())
+           return true;
         
-        for (String word : words) {
-            if (s.startsWith(word)) {
-                boolean result = dfs(s.substring(word.length(), s.length()), words, dp);
-                dp.put(s, result);
+        if (dp.containsKey(index))
+            return dp.get(index);
+        
+        TrieNode curr = root;
+        for (int i = index; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if  (!curr.map.containsKey(c))
+                break;
+            if (curr.map.get(c).end) {
+                boolean result = dfs(s, i + 1, root, dp);
+                dp.put(index, result);
                 if (result)
                     return true;
             }
+            curr = curr.map.get(c);
         }
+        dp.put(index, false);
         return false;
+    }
+    
+    public static class TrieNode {
+        Map<Character, TrieNode> map = new HashMap<>();
+        boolean end = false;
     }
 }
