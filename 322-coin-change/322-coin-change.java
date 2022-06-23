@@ -1,25 +1,16 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        int min = Integer.MAX_VALUE;
-        Map<Integer, Integer> dp = new HashMap<>();
-        min = Math.min(min, dfs(coins, amount, dp));
-        return min == Integer.MAX_VALUE - 1 ? -1 : min;
-    }
-    
-    public int dfs(int[] coins, int amount, Map<Integer, Integer> dp) {
-        if (amount == 0)
-            return 0;
-        
-        if (dp.containsKey(amount))
-            return dp.get(amount);
-        
-        int total = Integer.MAX_VALUE - 1;
-        for (int i = 0; i < coins.length; i++) {
-            if (amount - coins[i] >= 0) {
-                total = Math.min(total, 1 + dfs(coins, amount - coins[i], dp));
+        int[] dp = new int[amount + 1];
+        for (int i = 0; i < dp.length; i++)
+            dp[i] = Integer.MAX_VALUE - 1;
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            boolean found = false;
+            for (int j = 0; j < coins.length; j++) {
+                if (i - coins[j] >= 0)
+                    dp[i] = Math.min(dp[i], 1 + dp[i - coins[j]]);
             }
         }
-        dp.put(amount, total);
-        return total;
+     return dp[amount] != Integer.MAX_VALUE - 1 ? dp[amount] : -1;   
     }
 }
