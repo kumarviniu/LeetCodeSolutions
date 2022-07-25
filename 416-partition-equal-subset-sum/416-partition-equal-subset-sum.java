@@ -13,18 +13,21 @@ class Solution {
     public boolean canPartition(int idx, int target, int[] nums, int[][] dp) {
         if (target == 0)
             return true;
+        
         if (idx >= nums.length)
             return false;
+        
         if (dp[idx][target] != 0)
             return dp[idx][target] == 1 ? true : false;
 
-        if ((target - nums[idx] >= 0 && canPartition(idx + 1, target - nums[idx], nums, dp)) || canPartition(idx + 1, target, nums, dp)) {
+        if (target - nums[idx] >= 0 && canPartition(idx + 1, target - nums[idx], nums, dp)) {
             dp[idx][target] = 1;
             return true;
         }
         
         dp[idx][target] = 2;
-        return false;
+        
+        return canPartition(idx + 1, target, nums, dp);
     }
     
 }
