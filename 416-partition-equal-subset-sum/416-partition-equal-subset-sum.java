@@ -3,23 +3,31 @@ class Solution {
         int sum = 0;
         for (int num : nums)
             sum += num;
-        if (sum % 2 == 1)
+        if ((sum & 1) == 1)
             return false;
-     
         int target = sum / 2;
-        Set<Integer> dp = new HashSet<>();
-        
-        dp.add(0);
-        
-        for (int num : nums) {
-            Set<Integer> cloneSet = new HashSet<>(dp);
-            for (Integer val : dp) {
-                if (val + num == target)
-                    return true;
-                cloneSet.add(val + num);
-            }
-            dp.addAll(cloneSet);
-        }
-        return false;
+        int[][] dp = new int[nums.length][target + 1];
+        return canPartition(0, target, nums, dp);
     }
+    
+    public boolean canPartition(int idx, int target, int[] nums, int[][] dp) {
+        if (target == 0)
+            return true;
+        
+        if (idx >= nums.length)
+            return false;
+        
+        if (dp[idx][target] != 0)
+            return dp[idx][target] == 1 ? true : false;
+
+        if (target - nums[idx] >= 0 && canPartition(idx + 1, target - nums[idx], nums, dp)) {
+            dp[idx][target] = 1;
+            return true;
+        }
+        
+        dp[idx][target] = 2;
+        
+        return canPartition(idx + 1, target, nums, dp);
+    }
+    
 }
