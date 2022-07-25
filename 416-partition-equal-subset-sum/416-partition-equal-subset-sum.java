@@ -17,12 +17,12 @@ class Solution {
             return false;
         if (dp[idx][target] != 0)
             return dp[idx][target] == 1 ? true : false;
-        for (int i = idx; i < nums.length; i++) {
-            if (target - nums[idx] >= 0 && canPartition(i + 1, target - nums[idx], nums, dp)) {
-                dp[idx][target] = 1;
-                return true;
-            }
+
+        if ((target - nums[idx] >= 0 && canPartition(idx + 1, target - nums[idx], nums, dp)) || canPartition(idx + 1, target, nums, dp)) {
+            dp[idx][target] = 1;
+            return true;
         }
+        
         dp[idx][target] = 2;
         return false;
     }
