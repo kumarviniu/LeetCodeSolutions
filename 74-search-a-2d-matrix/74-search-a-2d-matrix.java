@@ -17,6 +17,8 @@ class Solution {
     boolean binarySearch(int[] array, int target) {
         int i = 0;
         int j = array.length - 1;
+        if (target < array[i] || target > array[j])
+            return false;
         while (i <= j) {
             int m = (i + j) / 2;
             if (array[m] == target)
