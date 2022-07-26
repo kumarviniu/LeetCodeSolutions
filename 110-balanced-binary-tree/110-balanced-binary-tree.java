@@ -22,11 +22,11 @@ class Solution {
     
     public int heightDiff(TreeNode root, boolean[] isBalance) {
         if (root == null)
-            return -1;
-        int l = 1 + heightDiff(root.left, isBalance);
-        int r = 1 + heightDiff(root.right, isBalance);
+            return 0;
+        int l = heightDiff(root.left, isBalance);
+        int r = heightDiff(root.right, isBalance);
         if (Math.abs(l - r) > 1)
             isBalance[0] = false;
-        return Math.max(l, r);
+        return Math.max(l, r) + 1;
     }
 }
