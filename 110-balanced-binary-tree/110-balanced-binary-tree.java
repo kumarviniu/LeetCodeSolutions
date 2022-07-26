@@ -23,6 +23,8 @@ class Solution {
     public int heightDiff(TreeNode root, boolean[] isBalance) {
         if (root == null)
             return 0;
+        if (!isBalance[0])
+            return 0;
         int l = heightDiff(root.left, isBalance);
         int r = heightDiff(root.right, isBalance);
         if (Math.abs(l - r) > 1)
