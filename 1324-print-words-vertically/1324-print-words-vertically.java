@@ -14,17 +14,16 @@ class Solution {
                 lastChar = sb.length();
             } else
                 sb.append(" ");
-            if (i == split.length - 1 && !isValid)
-                break;
             if (i == split.length - 1) {
+                if (!isValid) break;
                 result.add(sb.substring(0, lastChar));
                 sb = new StringBuilder("");
                 isValid = false;
                 idx++;
                 lastChar = 0;
+                i = -1;
             }
             i++;
-            i %= split.length;
         }
         return result;
     }
