@@ -16,18 +16,18 @@
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
-        right(root, 0, new HashSet<>(), result);
+        right(root, 0, result);
         return result;
     }
     
-    public void right(TreeNode root, int depth, Set<Integer> depths, List<Integer> result) {
+    public void right(TreeNode root, int depth, List<Integer> result) {
         if (root == null)
             return;
-        if (!depths.contains(depth)) {
+        
+        if (result.size() == depth)
             result.add(root.val);
-            depths.add(depth);
-        }
-        right(root.right, depth + 1, depths, result);
-        right(root.left, depth + 1, depths, result);
+            
+        right(root.right, depth + 1, result);
+        right(root.left, depth + 1, result);
     }
 }
