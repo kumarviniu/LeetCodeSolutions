@@ -15,30 +15,33 @@
  */
 class Solution {
     public TreeNode lcaDeepestLeaves(TreeNode root) {
-        int maxDepth = height(root);
-        return lca(root, 0, maxDepth);
+        return lca(root, 0).node;
     }
     
-    public TreeNode lca(TreeNode root, int depth, int maxDepth) {
-        if (root == null)
-            return null;
-        if (root.left == null && root.right == null) {
-            if (depth == maxDepth)
-                return root;
-            return null;
+    public Result lca(TreeNode root, int depth) {
+        if (root == null || (root.left == null && root.right == null))
+            return new Result(root, depth);
+        
+        Result l = lca(root.left, depth + 1);
+        Result r = lca(root.right, depth + 1);
+        
+        if (l.node != null && r.node != null) {
+            if (l.depth > r.depth)
+                return l;
+            else if (r.depth > l.depth)
+                return r;
+            else
+                return new Result(root, Math.max(l.depth, r.depth));
         }
-        TreeNode l = lca(root.left, depth + 1, maxDepth);
-        TreeNode r = lca(root.right, depth + 1, maxDepth);
-        if (l != null && r != null)
-            return root;
-        return l != null ? l : r;
+        return l.node != null ? l : r;
     }
     
-    public int height(TreeNode root) {
-        if (root == null)
-            return -1;
-        int l = 1 + height(root.left);
-        int r = 1 + height(root.right);
-        return Math.max(l, r);
+    public static class Result {
+        public TreeNode node;
+        public int depth;
+        public Result(TreeNode node, int depth) {
+            this.node = node;
+            this.depth = depth;
+        }
     }
 }
