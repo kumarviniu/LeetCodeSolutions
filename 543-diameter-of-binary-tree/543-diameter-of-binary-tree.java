@@ -22,10 +22,10 @@ class Solution {
     
     public int diameter(TreeNode root, int[] max) {
         if (root == null)
-            return -1;
-        int l = 1 + diameter(root.left, max);
-        int r = 1 + diameter(root.right, max);
+            return 0;
+        int l = diameter(root.left, max);
+        int r = diameter(root.right, max);
         max[0] = Math.max(max[0], l + r);
-        return Math.max(l, r);
+        return Math.max(l, r) + 1;
     }
 }
