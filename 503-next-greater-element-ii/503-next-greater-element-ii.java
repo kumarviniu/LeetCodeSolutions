@@ -3,6 +3,7 @@ class Solution {
         int[] result = new int[nums.length];
         Stack<Integer> index = new Stack<>();
         int idx = 0;
+        Arrays.fill(result, -1);
         for (int i = 0; i < 2 * nums.length - 1; i++) {
             if (i == nums.length) idx = 0;
             while (!index.isEmpty() && nums[idx] > nums[index.peek()])
@@ -11,8 +12,6 @@ class Solution {
                 index.add(idx);
             idx++;
         }
-        while (!index.isEmpty())
-            result[index.pop()] = -1;
 
         return result;
     }
