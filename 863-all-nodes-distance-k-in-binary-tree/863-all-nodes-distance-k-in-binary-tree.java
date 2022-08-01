@@ -25,8 +25,10 @@ class Solution {
       int size = q.size();
       for (int i = 0; i < size; i++) {
         TreeNode node = q.poll();
-        if (distance == k)
+        if (distance == k) {
           result.add(node.val);
+            continue;
+        }
         if (node.left != null && !visited.contains(node.left.val)) {
           q.add(node.left);
           visited.add(node.left.val);
