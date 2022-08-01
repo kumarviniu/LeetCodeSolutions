@@ -3,11 +3,12 @@ class Solution {
         if (arr.length < 3)
             return 0;
         int max = 0;
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 1; i < arr.length - 1; i++) {
             if (isPeak(arr, i)) {
                 int leftLength = left(arr, i);
-                int rightLength = right(arr, i);
-                max = Math.max(max, leftLength + rightLength + 1);
+                int[] rightLength = right(arr, i);
+                max = Math.max(max, leftLength + rightLength[0] + 1);
+                i = rightLength[1];
             }
         }
         return max;
@@ -20,14 +21,14 @@ class Solution {
         return i - (j + 1);
     }
     
-    public int right(int[] arr, int i) {
+    public int[] right(int[] arr, int i) {
         int j = i + 1;
         while (j < arr.length && arr[j - 1] > arr[j])
             j++;
-        return j - (i + 1);
+        return new int[] {j - (i + 1), j - 1};
     }
     
     public boolean isPeak(int[] arr, int i) {
-        return i - 1 >= 0 && i + 1 < arr.length && arr[i - 1] < arr[i] && arr[i + 1] < arr[i];
+        return arr[i - 1] < arr[i] && arr[i + 1] < arr[i];
     }
 }
