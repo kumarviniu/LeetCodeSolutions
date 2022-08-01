@@ -10,6 +10,7 @@
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
     ArrayList<Integer> result = new ArrayList<>();
+        findBelow(target, 1, k + 1, result);
     find(root, target.val, k + 1, result);
     return result;
     }
@@ -20,7 +21,6 @@ class Solution {
       return null;
 
     if (tree.val == target) {
-      findBelow(tree, 1, k, result);
       return 1;
     }
 
