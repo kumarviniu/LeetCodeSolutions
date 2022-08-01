@@ -9,51 +9,61 @@
  */
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-    ArrayList<Integer> result = new ArrayList<>();
-        findBelow(target, 1, k + 1, result);
-    find(root, target.val, k + 1, result);
-    return result;
+        return findNodesDistanceK(root, target.val, k);
     }
 
+  public ArrayList<Integer> findNodesDistanceK(TreeNode tree, int target, int k) {
+    Map<Integer, TreeNode> parentsMap = new HashMap<>();
+    setParent(tree, null, parentsMap);
+    TreeNode targetNode = null;
+    TreeNode parentOfTarget = parentsMap.get(target);
+    if (parentOfTarget == null)
+      targetNode = tree;
+   else if (parentOfTarget.left != null && parentOfTarget.left.val == target)
+      targetNode = parentOfTarget.left;
+    else if (parentOfTarget.right != null && parentOfTarget.right.val == target)
+      targetNode = parentOfTarget.right;
+    return bfs(targetNode, k, parentsMap);
+  }
 
-  public Integer find(TreeNode tree, int target, int k, List<Integer> result) {
-    if (tree == null)
-      return null;
-
-    if (tree.val == target) {
-      return 1;
-    }
-
-    Integer left = find(tree.left, target, k, result);
-    if (left != null) {
-      int currentDistance = left + 1;
-      if (currentDistance == k)
-        result.add(tree.val);
-      findBelow(tree.right, currentDistance + 1, k, result);
-      return currentDistance;
-    } else {
-      Integer right = find(tree.right, target, k, result);
-      if (right != null) {
-      int currentDistance = right + 1;
-      if (currentDistance == k)
-        result.add(tree.val);
-        findBelow(tree.left, currentDistance + 1, k, result);
-      return currentDistance;
-    }
+  public ArrayList<Integer> bfs(TreeNode targetNode, int k, Map<Integer, TreeNode> parentsMap) {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    Set<Integer> visited = new HashSet<>();
+    Queue<TreeNode> q = new ArrayDeque<>();
+    q.add(targetNode);
+    visited.add(targetNode.val);
+    int distance = 0;
+    while (!q.isEmpty()) {
+      int size = q.size();
+      for (int i = 0; i < size; i++) {
+        TreeNode node = q.poll();
+        if (distance == k)
+          result.add(node.val);
+        if (node.left != null && !visited.contains(node.left.val)) {
+          q.add(node.left);
+          visited.add(node.left.val);
+        }
+        if (node.right != null && !visited.contains(node.right.val)) {
+          q.add(node.right);
+          visited.add(node.right.val);
+        }
+        if (parentsMap.get(node.val) != null && !visited.contains(parentsMap.get(node.val).val)) {
+          q.add(parentsMap.get(node.val));
+          visited.add(parentsMap.get(node.val).val);
+        }
       }
-    return null;
-  } 
-
-  public void findBelow(TreeNode root, int prevDistance, int k, List<Integer> result) {
-    if (root == null)
-      return;
-
-    if (prevDistance == k) {
-      result.add(root.val);
-      return;
+      if (distance == k)
+        break;
+      distance++;
     }
+    return result;
+  }
 
-    findBelow(root.left, prevDistance + 1, k, result);
-    findBelow(root.right, prevDistance + 1, k, result);
+  public void setParent(TreeNode child, TreeNode parent, Map<Integer, TreeNode> parentsMap) {
+    if (child == null)
+      return;
+    parentsMap.put(child.val, parent);
+    setParent(child.left, child, parentsMap);
+    setParent(child.right, child, parentsMap);
   }
 }
