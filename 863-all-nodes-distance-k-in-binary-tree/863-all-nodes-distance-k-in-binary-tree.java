@@ -9,22 +9,10 @@
  */
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        return findNodesDistanceK(root, target.val, k);
+        Map<Integer, TreeNode> parentsMap = new HashMap<>();
+        setParent(root, null, parentsMap);  
+        return bfs(target, k, parentsMap);
     }
-
-  public ArrayList<Integer> findNodesDistanceK(TreeNode tree, int target, int k) {
-    Map<Integer, TreeNode> parentsMap = new HashMap<>();
-    setParent(tree, null, parentsMap);
-    TreeNode targetNode = null;
-    TreeNode parentOfTarget = parentsMap.get(target);
-    if (parentOfTarget == null)
-      targetNode = tree;
-   else if (parentOfTarget.left != null && parentOfTarget.left.val == target)
-      targetNode = parentOfTarget.left;
-    else if (parentOfTarget.right != null && parentOfTarget.right.val == target)
-      targetNode = parentOfTarget.right;
-    return bfs(targetNode, k, parentsMap);
-  }
 
   public ArrayList<Integer> bfs(TreeNode targetNode, int k, Map<Integer, TreeNode> parentsMap) {
     ArrayList<Integer> result = new ArrayList<Integer>();
