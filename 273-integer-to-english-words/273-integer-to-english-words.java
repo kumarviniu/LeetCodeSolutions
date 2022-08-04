@@ -1,27 +1,29 @@
 class Solution {
     public String numberToWords(int num) {
-        String[] numberMap =  {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
-        String[] twoNumberMap = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
         if (num == 0)
             return "Zero";
-        StringBuilder sb = new StringBuilder("");
-        String number = String.valueOf(num);
-        int i = number.length() - 1;
+        
+        String[] numberMap =  {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        String[] twoNumberMap = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
         String[] appendArray = {"", " Thousand", " Million", " Billion"};
+        
+        String number = String.valueOf(num);
+        Deque<String> stack = new ArrayDeque<>();
+        int i = number.length() - 1;
         int idx = 0;
+        
         while (i >= 0) {
-            int j = i;
-            while (j >= 0 && j >= i - 2)
-                j--;
-            String threeOrLessDigitNum = number.substring(j + 1, i + 1);
-            System.out.println(threeOrLessDigitNum);
+            String threeOrLessDigitNum = number.substring(Math.max(0, i - 2), i + 1);
             String result = solveThree(threeOrLessDigitNum, numberMap, twoNumberMap);
             result = !result.isEmpty() ? result + appendArray[idx] + " ": "";
-            sb.insert(0, result);
+            stack.add(result);
             idx++;
-            i = j;
+            i -= 3;
         }
         
+        StringBuilder sb = new StringBuilder("");
+        while (!stack.isEmpty())
+            sb.append(stack.pollLast());
         return sb.toString().trim();
     }
     
@@ -36,7 +38,7 @@ class Solution {
         if (threeOrLessDigitNum.length() == 2)
             return solveTwo(threeOrLessDigitNum, numberMap, twoNumberMap);
         
-        int hunderedDigit = Integer.parseInt(threeOrLessDigitNum.charAt(0) + "");
+        int hunderedDigit = Integer.parseInt(threeOrLessDigitNum.substring(0, 1));
         String twoResult = solveTwo(threeOrLessDigitNum.substring(1), numberMap, twoNumberMap);
         return hunderedDigit == 0 ? twoResult : numberMap[hunderedDigit] + " " + "Hundred" + (!twoResult.isEmpty() ? " " + twoResult : "");
     }
@@ -46,8 +48,9 @@ class Solution {
         if (num <= 19)
             return numberMap[num];
         String result = twoNumberMap[num / 10];
-        if (num % 10 != 0)
-            return result + " " + numberMap[num % 10];
+        num %= 10;
+        if (num != 0)
+            return result + " " + numberMap[num];
         return result;
     }
 }
