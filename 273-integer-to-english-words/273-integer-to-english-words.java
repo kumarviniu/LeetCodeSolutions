@@ -4,7 +4,7 @@ class Solution {
         String[] twoNumberMap = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
         if (num == 0)
             return "Zero";
-        Stack<String> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder("");
         String number = String.valueOf(num);
         int i = number.length() - 1;
         String[] appendArray = {"", " Thousand", " Million", " Billion"};
@@ -17,13 +17,11 @@ class Solution {
             System.out.println(threeOrLessDigitNum);
             String result = solveThree(threeOrLessDigitNum, numberMap, twoNumberMap);
             result = !result.isEmpty() ? result + appendArray[idx] + " ": "";
-            stack.add(result);
+            sb.insert(0, result);
             idx++;
             i = j;
         }
-        StringBuilder sb = new StringBuilder("");
-        while (!stack.isEmpty())
-            sb.append(stack.pop());
+        
         return sb.toString().trim();
     }
     
