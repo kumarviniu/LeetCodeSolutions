@@ -6,21 +6,28 @@ class Solution {
         if ((sum & 1) == 1)
             return false;
         int target = sum / 2;
-        return canPartition(nums, target);
+        int[][] dp = new int[nums.length][target + 1];
+        return canPartition(0, target, nums, dp);
     }
     
-    public boolean canPartition(int[] nums, int target) {
-        boolean[][] dp = new boolean[nums.length + 1][target + 1];
-        for (int i = 1; i <= nums.length; i++) {
-            for (int j = 0; j <= target; j++) {
-                if (j == 0)
-                    dp[i][j] = true;
-                else if (j - nums[i - 1] >= 0)
-                    dp[i][j] = dp[i - 1][j - nums[i - 1]] || dp[i - 1][j];
-                else
-                    dp[i][j] = dp[i - 1][j];
-            }
+    public boolean canPartition(int idx, int target, int[] nums, int[][] dp) {
+        if (target == 0)
+            return true;
+        
+        if (idx >= nums.length)
+            return false;
+        
+        if (dp[idx][target] != 0)
+            return dp[idx][target] == 1 ? true : false;
+
+        if (target - nums[idx] >= 0 && canPartition(idx + 1, target - nums[idx], nums, dp)) {
+            dp[idx][target] = 1;
+            return true;
         }
-        return dp[nums.length][target];
-    }   
+        
+        dp[idx][target] = 2;
+        
+        return canPartition(idx + 1, target, nums, dp);
+    }
+    
 }
