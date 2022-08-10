@@ -42,11 +42,6 @@ class Solution {
             return dp[pIdx][sIdx] = isMatch(s, p, pIdx + 1, sIdx + 1, dp);
         }
         
-        //else is asterisk
-        for (int i = sIdx; i < s.length(); i++) {
-            if (isMatch(s, p, pIdx + 1, i, dp))
-                return dp[pIdx][sIdx] = true;
-        }
-        return dp[pIdx][sIdx] = false;
+        return dp[pIdx][sIdx] = isMatch(s, p, pIdx + 1, sIdx, dp) || isMatch(s, p, pIdx, sIdx + 1, dp);
     }
 }
