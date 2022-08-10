@@ -8,7 +8,7 @@ class Solution {
         if (pIdx >= p.length() && sIdx >= s.length())
             return true;
         
-        if (pIdx >= p.length() && sIdx < s.length())
+        if (pIdx >= p.length())
             return false;
         
         //string is empty, but pattern isnt
