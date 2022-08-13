@@ -6,9 +6,7 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
-        Integer[][] minObstacles = new Integer[grid.length][grid[0].length];
         Deque<Cell> q = new LinkedList<>();
-        int minObstaclesToReach = grid.length + grid[0].length;
         q.add(new Cell(0, 0, 0));
         while (!q.isEmpty()) {
             Cell cell = q.poll();
@@ -18,14 +16,11 @@ class Solution {
                 int row = cell.row + direction[0];
                 int col = cell.col + direction[1];
                 if (isValid(grid, row, col)) {
-                    int newObstacles = cell.pathObstacles + grid[row][col];
-                    if (minObstacles[row][col] == null) {
-                        minObstacles[row][col] = newObstacles;
-                        if (grid[row][col] == 0)
-                            q.addFirst(new Cell(row, col, newObstacles));
-                        else 
-                            q.addLast(new Cell(row, col, newObstacles));
-                    }
+                    if (grid[row][col] == 0)
+                        q.addFirst(new Cell(row, col, cell.pathObstacles + grid[row][col]));
+                    else 
+                        q.addLast(new Cell(row, col, cell.pathObstacles + grid[row][col]));
+                    grid[row][col] = -1;
                 }
             }
         }
@@ -33,7 +28,7 @@ class Solution {
     }
     
     boolean isValid(int[][] grid, int i, int j) {
-        return i >= 0 && j >= 0 && i < grid.length && j < grid[0].length;
+        return i >= 0 && j >= 0 && i < grid.length && j < grid[0].length && grid[i][j] != -1;
     }
     
     class Cell {
