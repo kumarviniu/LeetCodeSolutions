@@ -1,5 +1,7 @@
 class Solution {
     public int shortestPath(int[][] grid, int k) {
+        if (k >= grid.length + grid[0].length)
+            return getH(grid, 0, 0);
         Integer[][] remainingObstacles = new Integer[grid.length][grid[0].length];
         int[][] directions = {
             {0, -1},
