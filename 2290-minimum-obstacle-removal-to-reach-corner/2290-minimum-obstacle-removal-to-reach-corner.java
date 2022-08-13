@@ -6,7 +6,9 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
         Deque<Cell> q = new ArrayDeque<>(grid.length * grid[0].length);
+        int minObstaclesToReach = grid.length + grid[0].length;
         q.add(new Cell(0, 0, 0));
         while (!q.isEmpty()) {
             Cell cell = q.poll();
@@ -16,11 +18,14 @@ class Solution {
                 int row = cell.row + direction[0];
                 int col = cell.col + direction[1];
                 if (isValid(grid, row, col)) {
-                    if (grid[row][col] == 0)
-                        q.addFirst(new Cell(row, col, cell.pathObstacles + grid[row][col]));
-                    else 
-                        q.addLast(new Cell(row, col, cell.pathObstacles + grid[row][col]));
-                    grid[row][col] = -1;
+                    int newObstacles = cell.pathObstacles + grid[row][col];
+                    if (!visited[row][col]) {
+                        visited[row][col] = true;
+                        if (grid[row][col] == 0)
+                            q.addFirst(new Cell(row, col, newObstacles));
+                        else 
+                            q.addLast(new Cell(row, col, newObstacles));
+                    }
                 }
             }
         }
@@ -28,7 +33,7 @@ class Solution {
     }
     
     boolean isValid(int[][] grid, int i, int j) {
-        return i >= 0 && j >= 0 && i < grid.length && j < grid[0].length && grid[i][j] != -1;
+        return i >= 0 && j >= 0 && i < grid.length && j < grid[0].length;
     }
     
     class Cell {
