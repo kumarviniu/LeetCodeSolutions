@@ -6,8 +6,8 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
-        boolean[][] visited = new boolean[grid.length][grid[0].length];
-        Deque<Cell> q = new ArrayDeque<>(grid.length * grid[0].length);
+        Integer[][] minObstacles = new Integer[grid.length][grid[0].length];
+        Deque<Cell> q = new LinkedList<>();
         int minObstaclesToReach = grid.length + grid[0].length;
         q.add(new Cell(0, 0, 0));
         while (!q.isEmpty()) {
@@ -19,8 +19,8 @@ class Solution {
                 int col = cell.col + direction[1];
                 if (isValid(grid, row, col)) {
                     int newObstacles = cell.pathObstacles + grid[row][col];
-                    if (!visited[row][col]) {
-                        visited[row][col] = true;
+                    if (minObstacles[row][col] == null) {
+                        minObstacles[row][col] = newObstacles;
                         if (grid[row][col] == 0)
                             q.addFirst(new Cell(row, col, newObstacles));
                         else 
