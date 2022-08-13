@@ -7,8 +7,8 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
-        Queue<Cell> q = new LinkedList<>();
-        q.add(new Cell(0, 0, 0,0));
+        PriorityQueue<Cell> q = new PriorityQueue<>((a, b) -> Integer.compare(a.fScore, b.fScore));
+        q.add(new Cell(0, 0, 0, 0, getH(grid, 0, 0)));
         remainingObstacles[0][0] = 0;
         while (!q.isEmpty()) {
             Cell cell = q.poll();
@@ -22,12 +22,18 @@ class Solution {
                     int newRemainingObstacles = k - (cell.pathObstacles + grid[row][col]);
                     if (newObstacles <= k && (remainingObstacles[row][col] == null || newRemainingObstacles > remainingObstacles[row][col])) {
                         remainingObstacles[row][col] = newRemainingObstacles;
-                        q.add(new Cell(row, col, cell.pathObstacles + grid[row][col], cell.path + 1));
+                        q.add(new Cell(row, col, newObstacles, cell.path + 1, getH(grid, row, col)));
                     }
                 }
             }
         }
         return -1;
+    }
+    
+    int getH(int[][] grid, int row, int col) {
+        int endRow = grid.length - 1;
+        int endCol = grid[0].length - 1;
+        return Math.abs(endRow - row) + Math.abs(endCol - col);
     }
     
     boolean isValid(int[][] grid, int i, int j) {
@@ -39,12 +45,15 @@ class Solution {
         int col;
         int pathObstacles = 0;
         int path = 0;
+        int pathToEnd;
+        int fScore;
         
-        Cell(int i, int j, int o, int p) {
+        Cell(int i, int j, int o, int g, int h) {
             row = i;
             col = j;
             pathObstacles = o;
-            path = p;
+            path = g;
+            fScore = g + h;
         }
     }
 }
