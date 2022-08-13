@@ -6,7 +6,8 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
-        Deque<Cell> q = new ArrayDeque<>(grid.length * grid[0].length);
+        Integer[][] minObstacles = new Integer[grid.length][grid[0].length];
+        PriorityQueue<Cell> q = new PriorityQueue<>((a, b) -> Integer.compare(a.pathObstacles, b.pathObstacles));
         q.add(new Cell(0, 0, 0));
         while (!q.isEmpty()) {
             Cell cell = q.poll();
@@ -16,11 +17,11 @@ class Solution {
                 int row = cell.row + direction[0];
                 int col = cell.col + direction[1];
                 if (isValid(grid, row, col)) {
-                    if (grid[row][col] == 0)
-                        q.addFirst(new Cell(row, col, cell.pathObstacles + grid[row][col]));
-                    else 
-                        q.addLast(new Cell(row, col, cell.pathObstacles + grid[row][col]));
-                    grid[row][col] = -1;
+                    int newObstacles = cell.pathObstacles + grid[row][col];
+                    if (minObstacles[row][col] == null) {
+                        minObstacles[row][col] = newObstacles;
+                        q.add(new Cell(row, col, newObstacles));
+                    }
                 }
             }
         }
@@ -28,7 +29,7 @@ class Solution {
     }
     
     boolean isValid(int[][] grid, int i, int j) {
-        return i >= 0 && j >= 0 && i < grid.length && j < grid[0].length && grid[i][j] != -1;
+        return i >= 0 && j >= 0 && i < grid.length && j < grid[0].length;
     }
     
     class Cell {
