@@ -6,7 +6,7 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
-        Deque<Cell> q = new LinkedList<>();
+        Deque<Cell> q = new ArrayDeque<>(grid.length * grid[0].length);
         q.add(new Cell(0, 0, 0));
         while (!q.isEmpty()) {
             Cell cell = q.poll();
