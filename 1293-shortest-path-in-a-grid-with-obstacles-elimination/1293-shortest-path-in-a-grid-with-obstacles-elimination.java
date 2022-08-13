@@ -7,7 +7,12 @@ class Solution {
             {-1, 0},
             {1, 0}
         };
-        PriorityQueue<Cell> q = new PriorityQueue<>((a, b) -> Integer.compare(a.fScore, b.fScore));
+        PriorityQueue<Cell> q = new PriorityQueue<>((a, b) ->  { 
+            int result = Integer.compare(a.fScore, b.fScore);
+            if (result == 0)
+                result = Integer.compare(a.pathObstacles, b.pathObstacles);
+            return result;
+        });
         q.add(new Cell(0, 0, 0, 0, getH(grid, 0, 0)));
         remainingObstacles[0][0] = 0;
         while (!q.isEmpty()) {
