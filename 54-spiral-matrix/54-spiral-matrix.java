@@ -1,62 +1,35 @@
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> result = new ArrayList<>();
-        
-        int r = matrix[0].length;
-        int l = 0;
-        int d = matrix.length;
-        int u = 1;
-        int i = 0;
-        int j = 0;
-        
-        int count = matrix.length * matrix[0].length;
-        while (count > 0) {
-            //go right
-            while (j < r) {
-                result.add(matrix[i][j]);
-                j++;
-                if (j == r)
-                    r--;
-                count--;
-            }
-            if (count == 0) break;
-            j--;
-            i++;
-            
-            //down
-            while(i < d) {
-                result.add(matrix[i][j]);
-                i++;
-                if (i == d)
-                    d--;
-                count--;
-            }
-             if (count == 0) break;
-            i--;
-            j--;
-            //left
-            while(j >= l) {
-                result.add(matrix[i][j]);
-                j--;
-                if (j < l)
-                    l++;
-                count--;
-            } 
-            if (count == 0) break;
-            j++;
-            i--;
-            //up
-            while (i >= u) {
-                result.add(matrix[i][j]);
-                i--;
-                if (i < u)
-                    u++;
-                count--;
-            }
-            if (count == 0) break;
-            i++;
-            j++;
+        int startRow = 0;
+        int startCol = 0;
+        int endRow = matrix.length - 1;
+        int endCol = matrix[0].length - 1;
+
+        List<Integer> traversalList = new ArrayList<>();
+        while (startRow <= endRow && startCol <= endCol) {
+            //traverse right
+            for (int i = startCol; i <= endCol; i++)
+                traversalList.add(matrix[startRow][i]);
+
+            //traverse down
+            for (int i = startRow + 1; i <= endRow; i++)
+                        traversalList.add(matrix[i][endCol]);
+
+            //traverse left
+            if (startRow != endRow)
+                for (int i = endCol - 1; i >= startCol; i--)
+                    traversalList.add(matrix[endRow][i]);
+
+            //traverse up
+            if (startCol != endCol)
+                for (int i = endRow - 1; i > startRow; i--)
+                    traversalList.add(matrix[i][startCol]);
+
+            startRow++;
+            endRow--;
+            startCol++;
+            endCol--;
         }
-        return result;
+        return traversalList;
     }
 }
