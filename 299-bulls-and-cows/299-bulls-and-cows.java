@@ -1,40 +1,28 @@
 class Solution {
     public String getHint(String secret, String guess) {
-        
-        Map<Character, Set<Integer>> characterIndexSetMap = new HashMap<>();
+
+        Map<Character, Integer> freq = new HashMap<>();
         for (int i = 0; i < secret.length(); i++) {
             char c = secret.charAt(i);
-            Set<Integer> indexSet = characterIndexSetMap.getOrDefault(c, new HashSet<>());
-            indexSet.add(i);
-            characterIndexSetMap.put(c, indexSet);
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
         }
-
-        Map<Character, Integer> freqMap = new HashMap<>();
-        for (int i = 0; i < secret.length(); i++) {
-            char c = secret.charAt(i);
-            freqMap.put(c, freqMap.getOrDefault(c, 0) + 1);
-        }
-
+ 
         int cows = 0;
-        for (int i = 0; i < secret.length(); i++) {
-            if (secret.charAt(i) == guess.charAt(i)) {
-                char c = secret.charAt(i);
-                freqMap.put(c, freqMap.get(c) - 1);
-                cows++;
-            }
-        }
-        
         int bulls = 0;
+        
         for (int i = 0; i < guess.length(); i++) {
-            char c = guess.charAt(i);
-            Set<Integer> inputCharIndex = characterIndexSetMap.get(c);
-            if (secret.charAt(i) == guess.charAt(i))
-                continue;
-            if (inputCharIndex != null && freqMap.get(c) > 0) {
+            if (guess.charAt(i) == secret.charAt(i)) {
+                if (freq.get(guess.charAt(i)) == 0) {
+                    bulls--;
+                    cows++;
+                } else {
+                    cows++;
+                    freq.put(guess.charAt(i), freq.get(guess.charAt(i)) - 1);
+                }
+            } else if (freq.containsKey(guess.charAt(i)) && freq.get(guess.charAt(i)) > 0) {
                 bulls++;
+                freq.put(guess.charAt(i), freq.get(guess.charAt(i)) - 1);   
             }
-            
-            freqMap.put(c, freqMap.getOrDefault(c, 0) - 1);
         }
         return cows + "A" + bulls + "B";
     }
