@@ -6,7 +6,7 @@ class Solution {
             freq[s.charAt(i)][0] = s.charAt(i); 
         }
         Arrays.sort(freq, (a, b) -> Integer.compare(a[1], b[1]));
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder(s.length());
         for (int i = 122; i >= 0; i--) {
             int j = 0;
             while (j++ < freq[i][1])
