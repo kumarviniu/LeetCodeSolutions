@@ -1,18 +1,30 @@
 class Solution {
     public String removeDuplicates(String s, int k) {
-        StringBuilder sb = new StringBuilder(s);
-        int[] count = new int[s.length()];
-        for (int i = 0; i < sb.length(); i++) {
-            if (i == 0 || sb.charAt(i) != sb.charAt(i - 1))
-                count[i] = 1;
+        Stack<Pair> countPair = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (countPair.isEmpty() || s.charAt(i) != countPair.peek().c)
+                countPair.add(new Pair(s.charAt(i), 1));
             else {
-                count[i] = count[i - 1] + 1;
-                if (count[i] == k) {
-                    sb.delete(i - k + 1, i + 1);
-                    i = i - k;
-                }
+                if (++countPair.peek().count == k)
+                    countPair.pop();
             }
+        }
+        StringBuilder sb = new StringBuilder(countPair.size());
+        while (!countPair.isEmpty()) {
+            Pair topPair = countPair.pop();
+            while (topPair.count-- > 0)
+                sb.insert(0, topPair.c);
         }
         return sb.toString();
     }
+    
+    static class Pair {
+        char c;
+        int count;
+        Pair(char c, int i) {
+            this.c = c;
+            this.count = i;
+        }
+    }
 }
+
