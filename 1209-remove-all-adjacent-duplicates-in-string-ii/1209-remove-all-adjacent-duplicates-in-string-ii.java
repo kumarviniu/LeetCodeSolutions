@@ -13,9 +13,9 @@ class Solution {
         while (!countPair.isEmpty()) {
             Pair topPair = countPair.pop();
             while (topPair.count-- > 0)
-                sb.insert(0, topPair.c);
+                sb.append(topPair.c);
         }
-        return sb.toString();
+        return sb.reverse().toString();
     }
     
     static class Pair {
