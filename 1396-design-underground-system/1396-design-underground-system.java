@@ -1,5 +1,5 @@
 class UndergroundSystem {
-    Map<String, Map<String, Integer[]>> stationAverage;
+    Map<String, Integer[]> stationAverage;
     Map<Integer, StationCheckIn> checkInTime;
     public UndergroundSystem() {
         stationAverage = new HashMap<>();
@@ -13,21 +13,21 @@ class UndergroundSystem {
     public void checkOut(int id, String stationName, int t) {
         StationCheckIn checkedInStation = checkInTime.get(id);
         int timeToTravel = t - checkedInStation.checkInTime;
-        Map<String, Integer[]> timeTravel = stationAverage.getOrDefault(checkedInStation.station, new HashMap<>());
-        Integer[] times = timeTravel.getOrDefault(stationName, new Integer[2]);
+        String stationsId = checkedInStation.station + " " + stationName;
+        Integer[] times = stationAverage.getOrDefault(stationsId, new Integer[2]);
         if (times[0] == null) {
             times[0] = 0;
             times[1] = 0;
         }
         times[0] += timeToTravel;
         times[1]++;
-        timeTravel.putIfAbsent(stationName, times);
-        stationAverage.putIfAbsent(checkedInStation.station, timeTravel);
+        
+        stationAverage.putIfAbsent(stationsId, times);
         checkInTime.remove(id);
     }
     
     public double getAverageTime(String startStation, String endStation) {
-        Integer[] sumAndCount = stationAverage.get(startStation).get(endStation);
+        Integer[] sumAndCount = stationAverage.get(startStation + " " + endStation);
         return (double) sumAndCount[0] / sumAndCount[1];
     }
     
