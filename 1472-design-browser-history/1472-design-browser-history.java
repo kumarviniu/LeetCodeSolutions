@@ -1,24 +1,22 @@
 class BrowserHistory {
-    List<String> visitedPages;
+    ArrayList<String> visitedPages;
     int currentIdx;
-    int end = 0;
+    int end;
     
     public BrowserHistory(String homepage) {
-        visitedPages = new LinkedList<>();
+        visitedPages = new ArrayList<>();
         visitedPages.add(homepage);
         currentIdx = 0;
+        end = 0;
     }
     
     public void visit(String url) {
-        if (currentIdx < end || end < visitedPages.size() - 1) {
+        if (visitedPages.size() > currentIdx + 1)
             visitedPages.set(currentIdx + 1, url);
-            currentIdx++;
-            end = currentIdx;
-        } else {
+        else
             visitedPages.add(url);
-            currentIdx++;
-            end++;
-        }
+        currentIdx++;
+        end = currentIdx;
     }
     
     public String back(int steps) {
