@@ -1,5 +1,5 @@
 class BrowserHistory {
-    ArrayList<String> visitedPages;
+    List<String> visitedPages;
     int currentIdx;
     int end;
     
