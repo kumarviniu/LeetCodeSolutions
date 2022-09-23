@@ -4,7 +4,7 @@ class BrowserHistory {
     int end = 0;
     
     public BrowserHistory(String homepage) {
-        visitedPages = new ArrayList<>();
+        visitedPages = new LinkedList<>();
         visitedPages.add(homepage);
         currentIdx = 0;
     }
