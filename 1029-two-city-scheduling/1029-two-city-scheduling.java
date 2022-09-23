@@ -18,4 +18,30 @@ class Solution {
         }
         return sum;
     }
+    
+    public void quickSelect(int[][] array, int l, int r, int k) {
+        int idx = partition(array, l, r);
+        if (idx == k) return;
+        if (k > idx) quickSelect(array, idx + 1, r, k);
+        quickSelect(array, l, idx - 1, k);
+    }
+    
+    public int partition(int[][] array , int l, int r) {
+        int i = l - 1;
+        int pivot = array[r][0];
+        for (int j = l; j < r; j++) {
+          if (array[j][0] <= pivot) {
+            i++;
+            swap(array, i, j);
+          }
+        }
+        swap(array, i + 1, r);
+        return i + 1;
+    }
+    
+    public static void swap(int[][] array, int i, int j) {
+        int[] temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
