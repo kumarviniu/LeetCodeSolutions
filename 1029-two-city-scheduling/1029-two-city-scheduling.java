@@ -31,8 +31,6 @@ class Solution {
     }
     
     public int partition(int[][] array , int l, int r) {
-        int randomPivotIdx = new Random().nextInt(l, r + 1);
-        swap(array, randomPivotIdx, r);
         int i = l - 1;
         int pivot = array[r][0];
         for (int j = l; j < r; j++) {
