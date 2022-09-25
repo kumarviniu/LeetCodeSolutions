@@ -18,15 +18,13 @@ class Solution {
                     stack.push(curr.next);
                 curr.next = curr.child;
                 curr.child.prev = curr;
-                curr = curr.child;
-                curr.prev.child = null;
+                curr.child = null;
             } else if (curr.next == null && !stack.isEmpty()) {
                 Node top = stack.pop();
                 curr.next = top;
                 top.prev = curr;
-                curr = top;
-            } else
-                curr = curr.next;
+            }
+            curr = curr.next;
         }
         return head;
     }
