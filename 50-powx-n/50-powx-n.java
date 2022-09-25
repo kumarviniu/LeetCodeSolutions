@@ -6,16 +6,13 @@ class Solution {
             x = 1 / x;
             N *= -1;
         }
-        return pow(x, N);
-    }
-    
-    public double pow(double x, long n) {
-        if (n == 0) return 1;
-        if (n == 1) return x;
-        if (n % 2 == 0) {
-            double left = pow(x, n / 2);
-            return left * left;
+        double ans = 1;
+        double product = x;
+        for (long i = N; i > 0; i /= 2) {
+            if (i % 2 == 1)
+                ans *= product;
+            product *= product;
         }
-        return pow(x, n - 1) * x;
+        return ans;
     }
 }
