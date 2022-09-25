@@ -1,21 +1,18 @@
 class Solution {
    
     public void flatten(TreeNode root) {
-        if (root == null) return;
-        TreeNode curr = root;
-        while (curr != null) {
-            if (curr.left != null) {
-                TreeNode rightMost = rightMost(curr.left);
-                rightMost.right = curr.right;
-                curr.right = curr.left;
-                curr.left = null;
-            }
-            curr = curr.right;
-        }
+        flattenRecursively(root);
     }
     
-    public TreeNode rightMost(TreeNode node) {
-        while (node.right != null) node = node.right;
-        return node;
+    public TreeNode flattenRecursively(TreeNode node) {
+        if (node == null) return null;
+        TreeNode leftTail = flattenRecursively(node.left);
+        TreeNode rightTail = flattenRecursively(node.right);
+        if (leftTail != null) {
+            leftTail.right = node.right;
+            node.right = node.left;
+            node.left = null;
+        }
+        return rightTail == null ? leftTail == null ? node : leftTail : rightTail;
     }
 }
