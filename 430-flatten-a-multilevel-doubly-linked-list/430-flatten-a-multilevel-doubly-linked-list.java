@@ -10,37 +10,24 @@ class Node {
 
 class Solution {
     public Node flatten(Node head) {
+        Stack<Node> stack = new Stack<>();
         Node curr = head;
         while (curr != null) {
-            Node next = curr.next;
-            if (curr.child != null)
-                mergeRecursively(curr, next);
-            curr = next;
+            if (curr.child != null) {
+                if (curr.next != null)
+                    stack.push(curr.next);
+                curr.next = curr.child;
+                curr.child.prev = curr;
+                curr = curr.child;
+                curr.prev.child = null;
+            } else if (curr.next == null && !stack.isEmpty()) {
+                Node top = stack.pop();
+                curr.next = top;
+                top.prev = curr;
+                curr = top;
+            } else
+                curr = curr.next;
         }
         return head;
-    }
-    
-    public void mergeRecursively(Node start, Node end) {
-        //start = 1, end = null
-        //start = 2, end = null
-        Node curr = start.child;
-        start.next = start.child;
-        start.child.prev = start;
-        start.child = null;
-        Node prev = null;
-        while (curr != null) {
-            Node next = curr.next;
-            if (curr.child != null) {
-                mergeRecursively(curr, next == null ? end : next);
-                prev = next;
-            } else
-                prev = curr;
-            curr = next;
-        }
-        if (prev != null) {
-            prev.next = end;
-            if (end != null)
-                end.prev = prev;
-        }
     }
 }
