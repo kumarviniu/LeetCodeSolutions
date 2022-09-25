@@ -7,7 +7,7 @@ class Solution {
             charCount[c][1]++;
         }
         Arrays.sort(charCount, (a, b) -> Integer.compare(b[1], a[1]));
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder(s.length());
         for (int i = 0; i < charCount.length; i++) {
             while (charCount[i][1] > 0) {
                 sb.append((char) charCount[i][0]);
