@@ -1,19 +1,15 @@
 class Solution {
     public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
-         Map<Integer, List<Integer>> adjList = adjList(pid, ppid);
-        if (!adjList.containsKey(kill)) return Collections.singletonList(kill);
+        Map<Integer, List<Integer>> adjList = adjList(pid, ppid);
         List<Integer> result = new ArrayList<>();
-        Queue<Integer> bfs = new ArrayDeque<>(pid.size());
-        bfs.add(kill);
-        while (!bfs.isEmpty()) {
-            int process = bfs.poll();
-            result.add(process);
-            if (adjList.containsKey(process)) {
-                for (Integer child : adjList.get(process))
-                    bfs.add(child);
-            }
-        }
+        dfs(adjList, kill, result);
         return result;
+    }
+    
+    public void dfs(Map<Integer, List<Integer>> adjList, int kill, List<Integer> result) {
+        result.add(kill);
+        if (!adjList.containsKey(kill)) return;
+        for (Integer child : adjList.get(kill)) dfs(adjList, child, result);
     }
     
     public Map<Integer, List<Integer>> adjList(List<Integer> pid, List<Integer> ppid) {
