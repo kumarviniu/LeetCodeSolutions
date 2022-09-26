@@ -1,7 +1,7 @@
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        List<List<Integer>> result = new ArrayList<>();
-        pathByDfs(graph, 0, new ArrayList<>(), result);
+        List<List<Integer>> result = new LinkedList<>();
+        pathByDfs(graph, 0, new LinkedList<>(), result);
         return result;
     }
     
@@ -13,6 +13,6 @@ class Solution {
         }
         path.add(node);
         for (int neighbor : graph[node]) 
-            pathByDfs(graph, neighbor, new ArrayList<>(path), result);
+            pathByDfs(graph, neighbor, new LinkedList<>(path), result);
     }
 }
