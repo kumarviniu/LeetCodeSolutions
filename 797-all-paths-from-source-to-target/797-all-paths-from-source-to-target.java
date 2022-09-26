@@ -1,32 +1,18 @@
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        return pathByDfs(graph, 0, new HashMap<>());
+        List<List<Integer>> result = new ArrayList<>();
+        pathByDfs(graph, 0, new ArrayList<>(), result);
+        return result;
     }
     
-    public List<List<Integer>> pathByDfs(int[][] graph, int node, Map<Integer, List<List<Integer>>> dp) {
+    public void pathByDfs(int[][] graph, int node, List<Integer> path, List<List<Integer>> result) {
         if (node == graph.length - 1) {
-            List<List<Integer>> paths = new LinkedList<>();
-            List<Integer> path = new LinkedList<>();
             path.add(node);
-            paths.add(path);            
-            return paths;
+            result.add(path);
+            return;
         }
-        
-        if (dp.containsKey(node))
-            return dp.get(node);
-        
-        List<List<Integer>> paths = new LinkedList<>();
-        for (int neighbor : graph[node]) {
-            List<List<Integer>> neighborPaths = pathByDfs(graph, neighbor, dp);
-            for (List<Integer> path : neighborPaths) {
-                List<Integer> newPath = new ArrayList<>(path.size() + 1);
-                newPath.add(node);
-                newPath.addAll(path);
-                paths.add(newPath);
-            }
-        }
-        
-        dp.put(node, paths);
-        return paths;
+        path.add(node);
+        for (int neighbor : graph[node]) 
+            pathByDfs(graph, neighbor, new ArrayList<>(path), result);
     }
 }
