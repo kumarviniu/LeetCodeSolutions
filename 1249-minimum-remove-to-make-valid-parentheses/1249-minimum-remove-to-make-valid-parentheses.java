@@ -1,33 +1,34 @@
 class Solution {
     public String minRemoveToMakeValid(String s) {
-        Stack<Pair> stack = new Stack<>();
-        Set<Integer> removeIdxList = new HashSet<>();
+        StringBuilder left = new StringBuilder(s.length());
+        int open = 0;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c >= 'a' && c <= 'z') continue;
-            if (c == '(') stack.add(new Pair(c, i));
-            else if (stack.isEmpty())
-                removeIdxList.add(i);
-            else
-                stack.pop();
+            if (c >= 'a' && c <= 'z') left.append(c);
+            else if (c == '(') {
+                open++;
+                left.append(c);
+            }
+            else if (open > 0) {
+                open--;
+                left.append(c);
+            }
         }
-        while (!stack.isEmpty())
-            removeIdxList.add(stack.pop().idx);
-        StringBuilder sb = new StringBuilder(s.length());
-        for (int i = 0; i < s.length(); i++) {
-            if (removeIdxList.contains(i)) continue;
-            sb.append(s.charAt(i));
+        int close = 0;
+        StringBuilder result = new StringBuilder(left.length());
+        for (int i = left.length() - 1; i >= 0; i--) {
+            char c = left.charAt(i);
+            if (c >= 'a' && c <= 'z') result.append(c);
+             else if (c == ')') {
+                close++;
+                result.append(c);
+            }
+            else if (close > 0) {
+                close--;
+                result.append(c);
+            }
         }
-        return sb.toString();
-    }
-    
-    static class Pair {
-        char c;
-        int idx;
         
-        Pair(char c, int i) {
-            this.c = c;
-            idx = i;
-        }
+        return result.reverse().toString();
     }
 }
